@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/michaelraymond/.config/menus'
+let g:netrw_dirhist_2='/Users/michaelraymond/.config/menus/applications-merged'
+let g:netrw_dirhist_3='/Users/michaelraymond/.git'
+let g:netrw_dirhist_4='/Users/michaelraymond/.git/branches'
+let g:netrw_dirhist_5='/Users/michaelraymond/.oh-my-zsh'
+let g:netrw_dirhist_6='/Users/michaelraymond/.oh-my-zsh/themes'

@@ -1,0 +1,54 @@
+"*":
+  "atom-material-ui":
+    colors:
+      abaseColor:
+        alpha: 1
+        blue: 126
+        green: 126
+        red: 126
+      predefinedColor: "Grey"
+    tabs:
+      compactTabs: true
+      tintedTabBar: true
+    treeView:
+      blendTabs: true
+      compactList: true
+    ui: {}
+  core:
+    audioBeep: false
+    disabledPackages: [
+      "print-atom"
+      "wrap-guide"
+    ]
+    themes: [
+      "seti-ui"
+      "monokai-dark"
+    ]
+  editor:
+    fontSize: 13
+    invisibles: {}
+    preferredLineLength: 1000
+    scrollPastEnd: true
+    showIndentGuide: true
+    tabLength: 4
+  "exception-reporting":
+    userId: "29e5870e-19fc-e224-b2e2-b4af312fde30"
+  metrics:
+    userId: "1fa2e97fb69aceede0a3c4a801b95d1a37e8513b"
+  minimap:
+    adjustAbsoluteModeHeight: true
+  "seti-ui":
+    compactView: true
+    disableAnimations: true
+    themeColor: "Steel"
+  "terminal-plus":
+    ansiColors:
+      normal:
+        blue:
+          red: 11
+          green: 123
+          blue: 255
+          alpha: 1
+    style: {}
+  welcome:
+    showOnStartup: false
