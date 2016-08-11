@@ -42,6 +42,14 @@ module.exports =
       "(^|\\s)(static\\s+)?((public|private|protected)\\s+)?(static\\s+)?function\\s+{word}\\s*\\("
     ]
     type: ["*.php"]
+    
+  Hack:
+    regex: [
+      "(^|\\s)class\\s+{word}(\\s|{|$)"
+      "(^|\\s)interface\\s+{word}(\\s|{|$)"
+      "(^|\\s)(static\\s+)?((public|private|protected)\\s+)?(static\\s+)?function\\s+{word}\\s*\\("
+    ]
+    type: ["*.hh"]
 
   Ruby:
     regex: [
@@ -59,3 +67,10 @@ module.exports =
       "(^|\\s)(SIGNAL|INT|BOOL|REAL|STRUC|CHAR|ENUM|EXT|\\s)\\s*\\w*{word}.*"
     ]
     type: ["*.src","*.dat"]
+
+  Perl:
+    regex: [
+      "(^|\\s)sub\\s+{word}\\s*\\{"
+      "(^|\\s)package\\s+(\\w+::)*{word}\\s*\\;"
+    ]
+    type: ["*.pm","*.pl"]

@@ -1,3 +1,49 @@
+## 1.9.3
+* Tweaks and fixes to scoped operators
+* Fix type operators/arrows conflict
+
+## 1.9.2
+* Type operators, (partial) fix for #71
+
+## 1.9.1
+* Fix data declaration highlighting
+* Add data decl spec
+* Remove debug print
+* Removed obsolete macro,ident arg to util.list func
+
+## 1.9.0
+* Highlight INCOHERENT/OVERLAP* instance pragmas
+* Properly highlight related imports/exports (e.g. Class(..) or Record(field))
+* Fix comments in record declarations
+* Clean-up type signature patterns
+
+Notes:
+
+I've made a hard decision to stop trying to highlight arbitrary type
+constraints. Only prelude classes are highlighted as constraints
+now.
+
+Class constraints were a source of major head-ache for a while now,
+and in many cases didn't work very well.
+
+## 1.8.3
+* Hide hint.* grammars from Atom UI
+
+## 1.8.2
+* Some fixes to class constraints
+
+## 1.8.1
+* Fix multiparam class constraints, forall
+
+## 1.8.0
+* Better highlighting for type families
+* GADTs unified with `data` definitons
+* Simplified many regexes to avoid unexpected backtracking-related hangs
+* Most haskell grammar patterns moved to repository
+* Fix GADT ctor scope to `tag`
+* Grammar files are distributed instead of being generated now
+* Remove hack used for grammar hooks
+
 ## 1.7.17
 * Prelude typeclasses
 * Merge branch 'master' of github.com:atom-haskell/language-haskell
