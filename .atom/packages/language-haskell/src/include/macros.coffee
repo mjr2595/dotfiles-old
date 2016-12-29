@@ -2,6 +2,7 @@
 
 module.exports=
   identStartCharClass: /[\p{Ll}_\p{Lu}\p{Lt}]/
+  identContCharClass: /[\p{Ll}_\p{Lu}\p{Lt}']/
   identCharClass: /[\p{Ll}_\p{Lu}\p{Lt}\p{Nd}']/
   functionNameOne: /[\p{Ll}_]{identCharClass}*/
   classNameOne: /[\p{Lu}\p{Lt}]{identCharClass}*/
@@ -30,14 +31,15 @@ module.exports=
     ///
   octalChar: /(?:\\o[0-7]+)/
   hexChar: /(?:\\x[0-9A-Fa-f]+)/
-  controlChar: /(?:\^[A-Z@\[\]\\\^_])/
-  character: '(?:{basicChar}|{escapeChar}|{octalChar}|{hexChar}|{controlChar})'
+  controlChar: /(?:\\\^[A-Z@\[\]\\^_])/
+  character: '(?:{basicChar}|{escapeChar}|{octalChar}|{hexChar}|{controlChar}|{operatorChar})'
   functionTypeDeclaration:
     concat list(/{functionName}|{operatorFun}/, /\s*,\s*/),
-      /\s*(::|∷)/
+      /\s*({doubleColonOperator})/
+  doubleColonOperator: '(?<!{operatorChar})(?:::|∷)(?!{operatorChar})'
   ctorTypeDeclaration:
     concat list(/{className}|{operatorFun}/, /\s*,\s*/),
-      /\s*(::|∷)/
+      /\s*({doubleColonOperator})/
   ctorArgs: ///
     (?!deriving)
     (?:
@@ -53,6 +55,6 @@ module.exports=
   indentBlockStart: '{maybeBirdTrack}({indentChar}*)'
   indentBlockEnd: /^(?!\1{indentChar}|{indentChar}*$)/
   maybeBirdTrack: /^/
-  lb: '(?:(?={identStartCharClass})(?<!{identStartCharClass}))'
+  lb: '(?:(?={identStartCharClass})(?<!{identContCharClass}))'
   rb: '(?:(?<={identCharClass})(?!{identCharClass}))'
   b: '(?:{lb}|{rb})'

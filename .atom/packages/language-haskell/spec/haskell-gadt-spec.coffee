@@ -34,7 +34,7 @@ describe 'GADT', ->
             scopes:[
               'source.haskell',
               'meta.declaration.type.data.haskell',
-              'storage.type.data.haskell'
+              'keyword.other.data.haskell'
             ]
           },
           {
@@ -138,6 +138,7 @@ describe 'GADT', ->
               'meta.declaration.type.data.haskell',
               'meta.ctor.type-declaration.haskell',
               'meta.type-signature.haskell',
+              'entity.name.type.haskell',
               'support.class.prelude.haskell'
             ]
           },
@@ -195,6 +196,7 @@ describe 'GADT', ->
               'meta.declaration.type.data.haskell',
               'meta.ctor.type-declaration.haskell',
               'meta.type-signature.haskell',
+              'entity.name.type.haskell',
               'support.class.prelude.haskell'
             ]
           }

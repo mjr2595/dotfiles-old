@@ -1,25 +1,6 @@
 prelude = require './prelude'
-
-pragmas = [
-  'LANGUAGE'
-  'OPTIONS_GHC'
-  'INCLUDE'
-  'WARNING'
-  'DEPRECATED'
-  'INLINE'
-  'NOINLINE'
-  'ANN'
-  'LINE'
-  'RULES'
-  'SPECIALIZE'
-  'UNPACK'
-  'SOURCE'
-]
-
-instance_pragmas = [
-  'INCOHERENT'
-  'OVERLAP(PABLE|PING|S)'
-]
+pragmas = require './pragmas'
+{ balanced } = require './util'
 
 module.exports=
   block_comment:
@@ -37,11 +18,13 @@ module.exports=
         ]
       ,
         name: 'comment.block.haskell'
-        begin: /\{-(?!#)/
+        begin: /\{-/
         end: /-\}/
         applyEndPatternLast: 1
         beginCaptures:
-          0: name: 'punctuation.definition.comment.haskell'
+          0: name: 'punctuation.definition.comment.block.start.haskell'
+        endCaptures:
+          0: name: 'punctuation.definition.comment.block.end.haskell'
         patterns: [
             include: '#block_comment'
         ]
@@ -193,8 +176,7 @@ module.exports=
       ,
         include: '#empty_list'
       ,
-        name: 'entity.other.inherited-class.haskell'
-        match: "{lb}(#{prelude.classes.join('|')}){rb}"
+        include: '#string'
       ,
         name: 'keyword.other.arrow.haskell'
         match: '(?<!{operatorChar})(->|→)(?!{operatorChar})'
@@ -203,9 +185,6 @@ module.exports=
         match: '(?<!{operatorChar})(=>|⇒)(?!{operatorChar})'
       ,
         include: '#operator'
-      ,
-        name: 'support.class.prelude.haskell'
-        match: "{lb}(#{prelude.types.join('|')}){rb}"
       ,
         name: 'variable.other.generic-type.haskell'
         match: /{lb}{functionName}{rb}/
@@ -264,7 +243,7 @@ module.exports=
   module_decl:
     name: 'meta.declaration.module.haskell'
     begin: /{indentBlockStart}(module){rb}/
-    end: /{lb}(where){rb}/
+    end: /{lb}(where){rb}|{indentBlockEnd}/
     beginCaptures:
       2: name: 'keyword.other.haskell'
     endCaptures:
@@ -278,9 +257,9 @@ module.exports=
   class_decl:
     name: 'meta.declaration.class.haskell'
     begin: /{indentBlockStart}(class){rb}/
-    end: /{lb}(where){rb}|$/
+    end: /{lb}(where){rb}|{indentBlockEnd}/
     beginCaptures:
-      2: name: 'storage.type.class.haskell'
+      2: name: 'keyword.other.class.haskell'
     endCaptures:
       1: name: 'keyword.other.haskell'
     patterns: [
@@ -289,22 +268,25 @@ module.exports=
   instance_decl:
     name: 'meta.declaration.instance.haskell'
     begin: /{indentBlockStart}(instance){rb}/
-    end: /{lb}(where){rb}|$/
+    end: /{lb}(where){rb}|{indentBlockEnd}/
     contentName: 'meta.type-signature.haskell'
     beginCaptures:
       2: name: 'keyword.other.haskell'
     endCaptures:
       1: name: 'keyword.other.haskell'
     patterns: [
-        {
-          name: 'meta.preprocessor.haskell'
-          begin: /\{-#/
-          end: /#-\}/
-          patterns: [
-              match: "{lb}(#{instance_pragmas.join('|')}){rb}"
-              name: 'keyword.other.preprocessor.haskell'
-          ]
-        }
+        {include: '#pragma'}
+        {include: '#type_signature'}
+    ]
+  deriving_instance_decl:
+    name: 'meta.declaration.instance.deriving.haskell'
+    begin: /{indentBlockStart}(deriving\s+instance){rb}/
+    end: /{indentBlockEnd}/
+    contentName: 'meta.type-signature.haskell'
+    beginCaptures:
+      2: name: 'keyword.other.haskell'
+    patterns: [
+        {include: '#pragma'}
         {include: '#type_signature'}
     ]
   foreign_import:
@@ -319,7 +301,9 @@ module.exports=
         captures:
           0: name: 'keyword.other.haskell'
       ,
-        include: '$self'
+        include: '#function_type_declaration'
+      ,
+        include: '#haskell_expr'
     ]
   regular_import:
     name: 'meta.import.haskell'
@@ -341,7 +325,7 @@ module.exports=
     begin: /{indentBlockStart}(data|newtype)\s+((?:(?!=|where).)*)/
     end: /{indentBlockEnd}/
     beginCaptures:
-      2: name: 'storage.type.data.haskell'
+      2: name: 'keyword.other.data.haskell'
       3:
         name: 'meta.type-signature.haskell'
         patterns: [
@@ -385,11 +369,11 @@ module.exports=
     ]
   type_alias:
     name: 'meta.declaration.type.type.haskell'
-    begin: /{indentBlockStart}(type)/
+    begin: /{indentBlockStart}(type){rb}/
     end: /{indentBlockEnd}/
     contentName: 'meta.type-signature.haskell'
     beginCaptures:
-      2: name: 'storage.type.data.haskell'
+      2: name: 'keyword.other.type.haskell'
     patterns: [
         {include: '#comments'}
         {include: '#family_and_instance'}
@@ -401,7 +385,7 @@ module.exports=
     name: 'keyword.other.haskell'
     match: /{lb}(deriving|where|data|type|newtype){rb}/
   ,
-    name: 'storage.type.haskell'
+    name: 'keyword.other.haskell'
     match: /{lb}(data|type|newtype){rb}/
   ,
     name: 'keyword.operator.haskell'
@@ -452,20 +436,16 @@ module.exports=
         ]
       3: name: 'punctuation.definition.string.end.haskell'
   scoped_type: [
-    match: '\\((?<paren>(?:[^()]|\\(\\g<paren>\\))*)(::|∷)(?<paren2>(?:[^()]|\\(\\g<paren2>\\))*)\\)'
+    match: "\\((#{balanced 'paren', '\\(', '\\)'}{doubleColonOperator}#{balanced 'paren2', '\\(', '\\)'})\\)"
     captures:
-      1: patterns: [include: 'source.haskell']
-      2: name: 'keyword.other.double-colon.haskell'
-      3: {name: 'meta.type-signature.haskell', patterns: [include: '#type_signature']}
+      1: patterns: [
+        include: '#haskell_expr'
+      ]
   ,
-    match: '(::|∷)(.*?)(?:(?<!{operatorChar})(<-|=)(?!{operatorChar})|$)'
+    match: '({doubleColonOperator})(.*?)(?=(?<!{operatorChar})(<-|=)(?!{operatorChar})|$)'
     captures:
       1: name: 'keyword.other.double-colon.haskell'
       2: {name: 'meta.type-signature.haskell', patterns: [include: '#type_signature']}
-      3: patterns: [
-          {include: '#assignment_op'}
-          {include: '#operator'}
-      ]
   ]
   scoped_type_override:
     match: '{indentBlockStart}{functionTypeDeclaration}(.*)(?<!{operatorChar})(<-|=)(?!{operatorChar})'
@@ -477,13 +457,6 @@ module.exports=
           {include: '#assignment_op'}
           {include: '#operator'}
       ]
-  prelude:[
-    name: 'support.tag.haskell'
-    match: "{lb}(#{prelude.constr.join('|')}){rb}"
-  ,
-    name: 'support.function.prelude.haskell'
-    match: "{lb}(#{prelude.funct.join('|')}){rb}"
-  ]
   comma:
     name: 'punctuation.separator.comma.haskell'
     match: /,/
@@ -506,15 +479,37 @@ module.exports=
   identifier:
     match: '{lb}{functionName}{rb}'
     name: 'identifier.haskell'
-    captures: 0: patterns: [ include: '#module_name_prefix' ]
+    captures: 0: patterns: [
+      { include: '#module_name_prefix' }
+      {
+        name: 'support.function.prelude.haskell'
+        match: "{lb}(#{prelude.funct.join('|')}){rb}"
+      }
+    ]
   type_name:
     name: 'entity.name.type.haskell'
     match: /{lb}{className}{rb}/
-    captures: 0: patterns: [ include: '#module_name_prefix' ]
+    captures: 0: patterns: [
+      { include: '#module_name_prefix' }
+      {
+          name: 'entity.other.inherited-class.prelude.haskell'
+          match: "{lb}(#{prelude.classes.join('|')}){rb}"
+      }
+      {
+          name: 'support.class.prelude.haskell'
+          match: "{lb}(#{prelude.types.join('|')}){rb}"
+      }
+    ]
   type_ctor:
     name: 'entity.name.tag.haskell'
     match: /{lb}{className}{rb}/
-    captures: 0: patterns: [ include: '#module_name_prefix' ]
+    captures: 0: patterns: [
+      { include: '#module_name_prefix' }
+      {
+        name: 'support.tag.prelude.haskell'
+        match: "{lb}(#{prelude.constr.join('|')}){rb}"
+      }
+    ]
   where:
     match: '{lb}where{rb}'
     name: 'keyword.other.haskell'
@@ -534,3 +529,52 @@ module.exports=
   attribute_name:
     name: 'entity.other.attribute-name.haskell'
     match: /{lb}{functionName}{rb}/
+  liquidhaskell_annotation:
+    name: 'block.liquidhaskell'
+    contentName: 'block.liquidhaskell.annotation'
+    begin: '\\{-@(?!#)'
+    end: '@-\\}'
+    patterns: [
+        include: '#haskell_expr'
+    ]
+  shebang:
+    name: 'comment.line.shebang.haskell'
+    match: '^\\#\\!.*\\brunhaskell\\b.*$'
+  haskell_expr: [
+    { include: '#infix_function' }
+    { include: '#unit' }
+    { include: '#empty_list' }
+    { include: '#quasi_quotes' }
+    { include: '#keywords' }
+    { include: '#pragma' }
+    { include: '#string' }
+    { include: '#newline_escape' }
+    { include: '#quoted_character' }
+    { include: '#comments' }
+    { include: '#infix_op' }
+    { include: '#comma' }
+    { include: '#lit_num' }
+    { include: '#scoped_type' }
+    { include: '#operator' }
+    { include: '#identifier' }
+    { include: '#type_ctor' }
+  ]
+  haskell_toplevel: [
+    { include: '#liquidhaskell_annotation' }
+    { include: '#class_decl' }
+    { include: '#instance_decl' }
+    { include: '#deriving_instance_decl' }
+    { include: '#foreign_import' }
+    { include: '#regular_import' }
+    { include: '#data_decl' }
+    { include: '#type_alias' } # TODO: review stopped here
+    { include: '#c_preprocessor' }
+    { include: '#scoped_type_override' }
+    { include: '#function_type_declaration' }
+    { include: '#haskell_expr' }
+  ]
+  haskell_source: [
+    { include: '#shebang' }
+    { include: '#module_decl' }
+    { include: '#haskell_toplevel' }
+  ]

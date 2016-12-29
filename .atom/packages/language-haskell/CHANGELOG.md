@@ -1,3 +1,50 @@
+## 1.10.1
+* Add support for type-level string literals
+* Fix flaky control character pattern
+
+## 1.10.0
+* Change storage.type scope to keyword.other
+* Fix LICENSE date
+* Update LICENSE
+
+## 1.9.12
+* Fix module/class/instance end anchors
+
+## 1.9.11
+* Fix anchoring for identifiers'with'apostrophes in the middle
+
+## 1.9.10
+* Support for StandaloneDeriving
+* Clean foreign imp/exp
+* Add spec for quoted '::'
+* Simplify some specs
+* Fix for scoped_type with :: in string
+
+## 1.9.9
+* Now really fix #64
+
+## 1.9.8
+* Fix #64... again
+
+## 1.9.7
+* Add prelude scope to support.tag
+* Readme update
+
+## 1.9.6
+* Move prelude rules to related scopes
+* Use proper right boundary for type alias
+* Add most (hopefully all) recognized GHC pragmas
+* instance spec
+
+## 1.9.5
+* Fix for #84
+* Specs for #84
+
+## 1.9.4
+* Fix for #82
+* Tests for #82
+* Custom jasmine matchers
+
 ## 1.9.3
 * Tweaks and fixes to scoped operators
 * Fix type operators/arrows conflict

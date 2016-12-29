@@ -1,3 +1,62 @@
+<a name="v4.25.7"></a>
+# v4.25.7 (2016-11-30)
+
+## :bug: Bug Fixes
+
+- Fix error raised when a pane is destroyed ([c5717e84](https://github.com/atom-minimap/minimap/commit/c5717e8431352bfe5c88cc206afb0d6e718d73b6), [#489](https://github.com/atom-minimap/minimap/issues/489))
+
+<a name="v4.25.5"></a>
+# v4.25.5 (2016-10-20)
+
+## :bug: Bug Fixes
+
+- Fix invalid overlay offset when minimap is not adjusted ([73b9917c](https://github.com/atom-minimap/minimap/commit/73b9917c11813c24209d3c14ec28cbcd8b8bb2e9))
+- Guard against destroyed editor in adapters and decorations manager ([252d4572](https://github.com/atom-minimap/minimap/commit/252d4572a150a4fb14260c6d89784f5da8459823), [#489](https://github.com/atom-minimap/minimap/issues/489))
+
+<a name="v4.25.4"></a>
+# v4.25.4 (2016-10-20)
+
+## :bug: Bug Fixes
+
+- Fix size change handler making scrolling in the minimap impossible ([f98b54df](https://github.com/atom-minimap/minimap/commit/f98b54dfb7d0dab2315bb4825edd8eca04cb2615))
+
+<a name="v4.25.3"></a>
+# v4.25.3 (2016-10-20)
+
+## :bug: Bug Fixes
+
+- Fix overlay margin applied even when minimap is on the right ([240e2b0b](https://github.com/atom-minimap/minimap/commit/240e2b0b1183a183f2ae1f4a8e3a423f2ed19b2e))
+
+<a name="v4.25.2"></a>
+# v4.25.2 (2016-10-20)
+
+## :bug: Bug Fixes
+
+- Fix invalid css value ([3eb581d0](https://github.com/atom-minimap/minimap/commit/3eb581d0d5d3db0c577bbb97ea2c08cdb451ac98))
+
+<a name="v4.25.1"></a>
+# v4.25.1 (2016-10-20)
+
+## :bug: Bug Fixes
+
+- Fix overlay offsets when minimap is on the left ([a0a38169](https://github.com/atom-minimap/minimap/commit/a0a38169a384e75083caea4c219fb70f35171b31))
+
+<a name="v4.25.0"></a>
+# v4.25.0 (2016-09-02)
+
+## :sparkles: Features
+
+- Add option to move the cursor when clicking to scroll in the minimap ([73f84fc0](https://github.com/atom-minimap/minimap/commit/73f84fc03e0b733ce7038f0391358ec40ec31d97), [#515](https://github.com/atom-minimap/minimap/issues/515))
+- Add tern-project settings ([dec0e7bd](https://github.com/atom-minimap/minimap/commit/dec0e7bd5689cf64649037c2ef658d1ba2d05f43))
+
+## :racehorse: Performances
+
+- Lazily load remaining dependencies ([b5419c36](https://github.com/atom-minimap/minimap/commit/b5419c36a11676d645be2eb844f081654c7c7cab))
+
+## :arrow_up: Dependencies Update
+
+- Bump engine version ([b4e70206](https://github.com/atom-minimap/minimap/commit/b4e702061ecb0b77a08909c98b9a10fdce400d8e))
+
 <a name="v4.24.7"></a>
 # v4.24.7 (2016-07-05)
 
