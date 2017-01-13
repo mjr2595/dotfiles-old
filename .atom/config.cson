@@ -1,19 +1,19 @@
 "*":
   "atom-material-ui":
     colors:
-      abaseColor:
-        alpha: 1
-        blue: 126
-        green: 126
-        red: 126
+      abaseColor: "#232323"
       predefinedColor: "Grey"
+    fonts:
+      fontSize: 14
     tabs:
       compactTabs: true
       tintedTabBar: true
     treeView:
       blendTabs: true
       compactList: true
-    ui: {}
+    ui:
+      animations: false
+      panelShadows: true
   core:
     audioBeep: false
     disabledPackages: [
@@ -23,8 +23,8 @@
     ]
     telemetryConsent: "limited"
     themes: [
-      "seti-ui"
-      "monokai-dark"
+      "atom-material-ui"
+      "atom-dark-syntax"
     ]
     useCustomTitleBar: true
   editor:

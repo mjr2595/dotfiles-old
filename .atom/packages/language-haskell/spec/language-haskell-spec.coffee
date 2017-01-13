@@ -70,9 +70,9 @@ describe "Language-Haskell", ->
   describe "backtick function call", ->
     it "finds backtick function names", ->
       {tokens} = grammar.tokenizeLine("\`func\`")
-      expect(tokens[0]).toEqual value: '`', scopes: ['source.haskell', 'keyword.operator.function.infix.haskell','punctuation.definition.entity.haskell']
+      expect(tokens[0]).toEqual value: '`', scopes: ['source.haskell', 'keyword.operator.function.infix.haskell', 'punctuation.definition.entity.haskell']
       expect(tokens[1]).toEqual value: 'func', scopes: ['source.haskell', 'keyword.operator.function.infix.haskell']
-      expect(tokens[2]).toEqual value: '`', scopes: ['source.haskell', 'keyword.operator.function.infix.haskell','punctuation.definition.entity.haskell']
+      expect(tokens[2]).toEqual value: '`', scopes: ['source.haskell', 'keyword.operator.function.infix.haskell', 'punctuation.definition.entity.haskell']
 
   describe "keywords", ->
     controlKeywords = ['case', 'of', 'in', 'where', 'if', 'then', 'else']
@@ -327,7 +327,6 @@ describe "Language-Haskell", ->
     it "<-", ->
       data = "x :: String <- undefined"
       {tokens} = grammar.tokenizeLine(data)
-      console.log JSON.stringify(tokens, undefined, 2)
       expect(tokens).toEqual [
         { value : 'x', scopes : [ 'source.haskell', 'identifier.haskell' ] }
         { value : ' ', scopes : [ 'source.haskell' ] }
@@ -442,3 +441,38 @@ describe "Language-Haskell", ->
                               [5, ['meta.preprocessor.haskell']]
                               [6, ['meta.preprocessor.haskell']]
                               ]]
+  describe "module", ->
+    it "understands module declarations", ->
+      g = grammarExpect grammar, 'module Module where'
+      g.toHaveTokens [['module', ' ', 'Module', ' ', 'where']]
+      g.toHaveScopes [['source.haskell', 'meta.declaration.module.haskell']]
+      g.tokenToHaveScopes [[[2, ['support.other.module.haskell']]]]
+    it "understands module declarations with exports", ->
+      g = grammarExpect grammar, 'module Module (export1, export2) where'
+      g.toHaveTokens [['module', ' ', 'Module', ' ', '(', 'export1', ',', ' ', 'export2', ')', ' ', 'where']]
+      g.toHaveScopes [['source.haskell', 'meta.declaration.module.haskell']]
+      g.tokenToHaveScopes [[[2, ['support.other.module.haskell']]
+                            [5, ['meta.declaration.exports.haskell', 'entity.name.function.haskell']]
+                            [8, ['meta.declaration.exports.haskell', 'entity.name.function.haskell']]
+                            ]]
+    it "understands module declarations with operator exports", ->
+      g = grammarExpect grammar, 'module Module ((<|>), export2) where'
+      g.toHaveTokens [['module', ' ', 'Module', ' ', '(', '(<|>)', ',', ' ', 'export2', ')', ' ', 'where']]
+      g.toHaveScopes [['source.haskell', 'meta.declaration.module.haskell']]
+      g.tokenToHaveScopes [[[2, ['support.other.module.haskell']]
+                            [5, ['meta.declaration.exports.haskell', 'entity.name.function.infix.haskell']]
+                            [8, ['meta.declaration.exports.haskell', 'entity.name.function.haskell']]
+                            ]]
+    it "understands module declarations with export lists", ->
+      g = grammarExpect grammar, 'module Module (export1 (..), export2 (Something)) where'
+      g.toHaveTokens [['module', ' ', 'Module', ' ', '(', 'export1', ' (' , '..', ')',
+                       ',', ' ', 'export2', ' (', 'Something', ')', ')', ' ', 'where']]
+      g.toHaveScopes [['source.haskell', 'meta.declaration.module.haskell']]
+      g.tokenToHaveScopes [[[2, ['support.other.module.haskell']]
+                            [5, ['meta.declaration.exports.haskell', 'entity.name.function.haskell']]
+                            [7, ['meta.declaration.exports.haskell', 'meta.other.constructor-list.haskell',
+                                 'keyword.operator.wildcard.haskell']]
+                            [11, ['meta.declaration.exports.haskell', 'entity.name.function.haskell']]
+                            [13, ['meta.declaration.exports.haskell', 'meta.other.constructor-list.haskell',
+                                  'entity.name.tag.haskell']]
+                            ]]

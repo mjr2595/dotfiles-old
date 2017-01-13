@@ -1,3 +1,24 @@
+## 1.10.4
+* Make operatorChar PCRE-compatible
+* Add applyEndPatternLast to module_exports
+* Module spec
+
+## 1.10.3
+* Use snippets parser in snippets spec
+* Add snippets spec
+* Fix snippet scopes, tweak some snippets
+* Fix record spec
+* Remove debug line from spec
+* Add more snippets
+* Update CONTRIBUTING.md
+* Fix typo
+* Fix contributing link
+
+## 1.10.2
+* Remove scope for comment leading whitespace (#99)
+* Add contributing reference in readme
+* Added CONTRIBUTING
+
 ## 1.10.1
 * Add support for type-level string literals
 * Fix flaky control character pattern
