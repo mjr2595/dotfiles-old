@@ -42,6 +42,8 @@
     plugins:
       "minimap-hide": true
       "minimap-hideDecorationsZIndex": 0
+  pigments:
+    markerType: "native-underline"
   "seti-ui":
     compactView: true
     disableAnimations: true
