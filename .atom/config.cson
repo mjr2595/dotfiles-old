@@ -1,7 +1,7 @@
 "*":
   "atom-material-ui":
     colors:
-      abaseColor: "#232323"
+      abaseColor: "#252525"
       predefinedColor: "Grey"
     fonts:
       fontSize: 14
@@ -26,7 +26,7 @@
       "atom-material-ui"
       "atom-dark-syntax"
     ]
-    useCustomTitleBar: true
+    titleBar: "custom"
   editor:
     fontSize: 13
     invisibles: {}
@@ -43,7 +43,7 @@
       "minimap-hide": true
       "minimap-hideDecorationsZIndex": 0
   pigments:
-    markerType: "native-underline"
+    markerType: "native-dot"
   "seti-ui":
     compactView: true
     disableAnimations: true
